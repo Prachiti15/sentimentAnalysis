@@ -1,0 +1,61 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+
+<script src="https://cdn.lordicon.com/bhenfmcm.js"></script>
+<span class="chatting-container column justify-around">
+  <span class="flex column justify-center items-center">
+    <p class="title">Product rating from Review Sentiments</p>
+    <span class="flex gap"> </span>
+  </span>
+
+  {% if not answer %}
+  <span id="dataSpan" class="dataspan">
+    <span
+      class="answer"
+      style="
+        display: flex-column;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+      "
+      id="answer"
+    >
+      <lord-icon
+        src="https://cdn.lordicon.com/cbyzfqag.json"
+        trigger="loop"
+        colors="outline:#121331,primary:#4bb3fd,secondary:#ebe6ef"
+        style="width: 250px; height: 250px"
+      >
+      </lord-icon>
+    </span>
+  </span>
+  {% endif %}
+
+  <form action="/loading" method="POST" class="input-container" id="form">
+    {% csrf_token %}
+    <input
+      value=""
+      id="inputTag"
+      name="question"
+      type="text"
+      placeholder="Enter a product name..."
+    />
+    <button style="background-color: transparent; border: none; color: white">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="1.5"
+        stroke="currentColor"
+        class="w-6 h-6 svg"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"
+        />
+      </svg>
+    </button>
+  </form>
+</span>
+
+{% endblock content %}

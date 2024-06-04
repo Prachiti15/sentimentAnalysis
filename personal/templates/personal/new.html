@@ -1,0 +1,209 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    {% comment %}
+    <link rel="stylesheet" href="new.css" />
+    {% endcomment %}
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        font-family: "PT Sans", sans-serif;
+      }
+
+      body {
+        background-color: #f4ebe0;
+        font-family: "PT Sans", sans-serif;
+      }
+      .heading_ {
+        text-align: center;
+        margin-bottom: 1rem;
+        font-weight: 100;
+        font-size: 1.23rem;
+        margin-top: 1rem;
+      }
+
+      .content_box {
+        background-color: #4d4d4d;
+        color: white;
+        padding: 2rem;
+        margin-left: 10rem;
+        margin-right: 10rem;
+        margin-top: 2rem;
+        margin-bottom: 5rem;
+      }
+
+      /* Add CSS styling for your charts container */
+      .chart-container {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+
+      /* Set the width of each chart container based on screen width */
+      .chart {
+        flex: 1;
+        max-width: calc(50% - 10px);
+        /* Two charts side by side on larger screens */
+        padding: 2rem;
+        max-height: 100%;
+      }
+
+      @media (max-width: 1024px) {
+        /* For screens with a maximum width of 1024px (e.g., tablets) */
+        .chart {
+          max-width: 100%;
+          /* One chart per row on tablets */
+        }
+        .chart-container {
+          justify-content: center;
+        }
+      }
+
+      @media (max-width: 768px) {
+        /* For screens with a maximum width of 768px (e.g., tablets and smaller screens) */
+        .chart {
+          max-width: 100%;
+
+          /* One chart per row on smaller screens */
+        }
+        .chart-container {
+          justify-content: center;
+        }
+        .content_box {
+          background-color: #f4ebe0;
+          color: #4d4d4d;
+          padding: 2rem;
+          align-items: center;
+          margin: 2rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="heading_">
+      <h1>{{ Product_Name }} </br>Rating: {{score}}</h1>
+    </div>
+    <div class="content_box">
+      <div class="chart-container">
+        <!-- Doughnut Chart -->
+        <div class="chart">
+          <center><p>Emotions</p></center>
+          <canvas id="doughnutChart"></canvas>
+        </div>
+
+        <!-- Bar Chart -->
+        <div class="chart">
+          <center><p>Products</p></center>
+          <canvas id="barChart"></canvas>
+        </div>
+      </div>
+    </div>
+    {% comment %}
+    <div class="content_box">
+      <div class="some_text">
+        <h3>{{description}}</h3>
+      </div>
+    </div>
+    {% endcomment %}
+    <div id="nutlabels" style="display: None">{{nutlabels|safe}}</div>
+    <div id="nutdata" style="display: None">{{nutdata|safe}}</div>
+    <div id="barlabels" style="display: None">{{barlabels|safe}}</div>
+    <div id="bardata" style="display: None">{{bardata|safe}}</div>
+
+    <script>
+      dd = document.getElementById("nutlabels").innerHTML;
+      var nutLabels = JSON.parse(dd);
+      nutData = JSON.parse(document.getElementById("nutdata").innerHTML);
+      barlabels = JSON.parse(document.getElementById("barlabels").innerHTML);
+      barD = JSON.parse(document.getElementById("bardata").innerHTML);
+      // Doughnut Chart Data
+      var doughnutData = {
+        labels: nutLabels,
+        datasets: [
+          {
+            data: nutData,
+            backgroundColor: [
+              "#576CBC",
+              "#fadf85",
+              "#FFABAB",
+              "rgba(191, 86, 128)",
+            ],
+          },
+        ],
+      };
+
+      // Bar Chart Data
+      var barData = {
+        labels: barlabels,
+        datasets: [
+          {
+            label: "Rating for each product",
+            data: barD,
+            backgroundColor: [
+              "rgba(250, 212, 212, 1)",
+              "rgba(245, 232, 199, 1)",
+              "rgba(230, 171, 145, 1)",
+              "rgba(191, 86, 128, 1)",
+            ],
+          },
+        ],
+      };
+
+      // Create Doughnut Chart
+      var doughnutChart = new Chart(document.getElementById("doughnutChart"), {
+        type: "doughnut",
+        data: doughnutData,
+        options: {
+          plugins: {
+            legend: {
+              labels: {
+                color: "#f4ebe0", // Set color of the legend labels
+              },
+            },
+          },
+        },
+      });
+
+      var barOptions = {
+        scales: {
+          x: {
+            grid: {
+              color: "rgba(244, 235, 224, 0.6)", // Set grid line color for x-axis
+            },
+            ticks: {
+              color: "rgba(244, 235, 224, 1)", // Set tick color for x-axis
+            },
+          },
+          y: {
+            grid: {
+              color: "rgba(244, 235, 224, 0.6)", // Set grid line color for y-axis
+            },
+            ticks: {
+              color: "rgba(244, 235, 224, 1)", // Set tick color for x-axis
+            },
+          },
+        },
+        plugins: {
+          legend: {
+            labels: {
+              color: "#f4ebe0", // Set color of the legend labels
+            },
+          },
+        },
+      };
+
+      // Create Bar Chart
+      var barChart = new Chart(document.getElementById("barChart"), {
+        type: "bar",
+        data: barData,
+        options: barOptions,
+      });
+    </script>
+  </body>
+</html>

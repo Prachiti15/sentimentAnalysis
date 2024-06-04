@@ -1,0 +1,196 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Product Page</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href={% static "https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" %} />
+    <link rel="preconnect" href={% static "https://fonts.googleapis.com" %}>
+
+    <link rel="preconnect" href={% static "https://fonts.gstatic.com"%} crossorigin>
+
+    <link href={% static "https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Open+Sans&display=swap"%}
+        rel="stylesheet">
+
+    <link href={% static 'css/bootstrap.min.css' %} rel="stylesheet">
+
+    <link href={% static 'css/bootstrap-icons.css' %} rel="stylesheet">
+
+    <link href={% static 'css/templatemo-topic-listing.css' %} rel="stylesheet">
+
+    <!-- Add Chart.js library -->
+    <script src='https://cdn.jsdelivr.net/npm/chart.js'></script>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg" style="background-color: #80d0ab;">
+        <div class="d-none d-lg-block " style="margin-left:3rem;">
+            <a href="javascript:history.go(-1)" class="navbar-icon bi-arrow-left-circle smoothscroll"></a>
+        </div>
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="bi bi-exclude"></i>
+                <span>ReviewWise</span>
+            </a>
+
+            <!-- <div class="d-lg-none ms-auto me-4">
+                                        <a href="#top" class="navbar-icon bi-person smoothscroll"></a>
+                                </div> -->
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-lg-5 me-lg-auto">
+                    <li class="nav-item">
+                        <a class="nav-link click-scroll" href="index.html">Home</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link click-scroll" href="index.html#section_2">How does it work?</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link click-scroll" href="index.html#section_3">How to use it?</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link click-scroll" href="index.html#section_4">Meet our Team</a>
+                    </li>
+
+                    <!-- <li class="nav-item">
+                        <a class="nav-link click-scroll" href="index.html#section_5">Contact</a>
+                    </li> -->
+
+                    <!-- <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarLightDropdownMenuLink" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">Pages</a>
+
+                        <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="navbarLightDropdownMenuLink">
+                            <li><a class="dropdown-item" href="topics-listing.html">Topics Listing</a></li>
+
+                            <li><a class="dropdown-item" href="contact.html">Contact Form</a></li>
+                        </ul>
+                    </li> -->
+                </ul>
+
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+
+
+        <h1 style="margin-top: 2rem; padding:1rem">{{Product_Name}}</h1>
+        <div class="row" style="background-color:#103b54;">
+            <div class="col-md-6">
+                <!-- Add a canvas element for the doughnut chart -->
+                <canvas id="doughnutChart" width="400" height="400" style="padding: 2rem;"></canvas>
+            </div>
+
+            <div class="col-md-6">
+                <!-- Add a canvas element for the bar chart -->
+                <canvas id="barChart" width="400" height="400" style="padding: 2rem;"></canvas>
+            </div>
+        </div>
+
+        <div style="height: 50px;"></div>
+
+    </div>
+
+    <script src={% static "js/jquery.min.js"%}></script>
+    <script src={% static "js/bootstrap.bundle.min.js"%}></script>
+    <script src={% static "js/jquery.sticky.js"%}></script>
+    <script src={% static "js/click-scroll.js"%}></script>
+    <script src={% static "js/custom.js"%}></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src={% static "https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"%}></script>
+    <div id="nutlabels" style="display: None">{{nutlabels|safe}}</div>
+    <div id="nutdata" style="display: None">{{nutdata|safe}}</div>
+    <div id="barlabels" style="display: None">{{barlabels|safe}}</div>
+    <div id="bardata" style="display: None">{{bardata|safe}}</div>
+
+    <script>
+      dd = document.getElementById("nutlabels").innerHTML;
+      var nutLabels = JSON.parse(dd);
+      nutData = JSON.parse(document.getElementById("nutdata").innerHTML);
+      barlabels = JSON.parse(document.getElementById("barlabels").innerHTML);
+      barD = JSON.parse(document.getElementById("bardata").innerHTML);
+      // Doughnut Chart Data
+      var doughnutData = {
+        labels: nutLabels,
+        datasets: [
+          {
+            data: nutData,
+            backgroundColor: ["rgb(255, 99, 132)", "rgb(54, 162, 235)", "#abf5be","#FFE15D"],
+          },
+        ],
+      };
+
+      // Bar Chart Data
+      var barData = {
+        labels: barlabels,
+        datasets: [
+          {
+            label: "Rating for each product",
+            data: barD,
+            backgroundColor: ["rgba(245, 159, 159, 0.8)", "rgba(138, 222, 183,0.8)","rgba(244, 247, 106,0.8)","rgba(195, 149, 232,0.8)"],
+            borderColor: "rgb(255, 99, 132)",
+            borderWidth: 1,
+          },
+        ],
+      };
+      var doughnutOptions = {
+        plugins: {
+            legend: {
+                labels: {
+                    color: "white",
+                },
+            },
+        },
+      };
+
+      // Create Doughnut Chart
+      var doughnutChart = new Chart(document.getElementById("doughnutChart"), {
+        type: "doughnut",
+        data: doughnutData,
+        options: doughnutOptions,
+      });
+
+
+    // Bar chart options
+    var barOptions = {
+        scales: {
+            y: {
+                grid: {
+                    color: "#eff4e2",
+                },
+                ticks: {
+                    color: "#eff4e2",
+                },
+            },
+            x: {
+                grid: {
+                    color: "#eff4e2",
+                },
+                ticks: {
+                    color: "#eff4e2",
+                },
+            },
+        },
+    };
+
+      // Create Bar Chart
+      var barChart = new Chart(document.getElementById("barChart"), {
+        type: "bar",
+        data: barData,
+        options: barOptions,
+      });
+    </script>
+</body>
+
+</html>
